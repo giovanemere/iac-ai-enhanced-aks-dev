@@ -33,6 +33,16 @@ case $ACTION in
         python3 "$PROJECT_ROOT/orchestration/multi-tool-runner.py" "$ENVIRONMENT" plan
         ;;
     
+    "backup")
+        echo "🔄 Ejecutando gestión de backup..."
+        "$PROJECT_ROOT/scripts/backup-manager.sh" "${3:-status}"
+        ;;
+    
+    "backup-ai")
+        echo "🤖 Ejecutando análisis IA de backup..."
+        python3 "$PROJECT_ROOT/ai-agents/backup-analyzer/main.py"
+        ;;
+    
     "destroy")
         echo "💥 Ejecutando destrucción con análisis IA..."
         

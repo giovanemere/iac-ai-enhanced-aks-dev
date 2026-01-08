@@ -1,19 +1,30 @@
-# 🤖 Azure AKS IaC - AI-Enhanced
+# 🤖 Azure AKS IaC - AI-Enhanced Platform
 
-Plataforma de Infrastructure as Code con **agentes de IA integrados** para Azure Kubernetes Service.
+Plataforma completa de Infrastructure as Code con **agentes de IA integrados** para Azure Kubernetes Service con **optimización automática de costos y backup inteligente**.
 
-## 🏗️ Arquitectura
+## ✅ Estado Actual del Sistema
+
+- **Cluster AKS**: ✅ Desplegado y funcionando (aks-aks-demo-dev)
+- **Estado Terraform**: ✅ Migrado correctamente
+- **Agentes IA**: ✅ Todos operativos (Orchestrator, Cost Optimizer, Backup Analyzer)
+- **Backup System**: ✅ Implementado con IA
+- **Documentación**: ✅ Completa con diagramas Mermaid
+- **Scripts**: ✅ Todos funcionales y probados
+
+## 🏗️ Arquitectura Consolidada
 
 ```
 azure-aks-iac/
 ├── 🤖 ai-agents/              # Agentes de IA
 │   ├── orchestrator/          # Coordinador principal
-│   └── cost-optimizer/        # Optimización de costos
+│   ├── cost-optimizer/        # Optimización de costos
+│   └── backup-analyzer/       # Análisis inteligente de backup
 ├── ⚙️  orchestration/         # Multi-tool runner
 ├── 🌍 environments/dev/       # Configuración de desarrollo
-├── 📦 modules/aks/            # Módulo AKS con IA
-├── 🔧 scripts/                # Scripts automatizados
-└── 📚 ARCHITECTURE.md         # Arquitectura detallada
+├── 📦 modules/aks/            # Módulo AKS con IA + Backup
+├── 🔧 scripts/                # Scripts automatizados completos
+├── 📚 docs/                   # Documentación completa
+└── 🏗️  ARCHITECTURE.md        # Arquitectura detallada
 ```
 
 ## 🚀 Uso
@@ -43,6 +54,39 @@ azure-aks-iac/
 ./scripts/destroy.sh dev tofu
 ./scripts/destroy.sh dev terragrunt
 ```
+
+## 🔄 Backup & Recovery
+
+### AI-Enhanced Backup Strategy
+- **Backup AI Agent**: Análisis automático de recursos críticos
+- **Azure Native Backup**: Backup Vault con políticas optimizadas
+- **Volume Snapshots**: Snapshots automáticos de discos persistentes
+- **Configuration Backup**: Backup de YAML y configuraciones
+
+### Comandos de Backup
+```bash
+# Análisis IA de backup
+./scripts/ai-orchestrator.sh dev backup-ai
+python3 ai-agents/backup-analyzer/main.py
+
+# Operaciones de backup
+./scripts/ai-orchestrator.sh dev backup     # Estado de backups
+./scripts/backup-manager.sh backup         # Backup manual completo
+./scripts/backup-manager.sh status         # Estado detallado
+./scripts/backup-manager.sh schedule       # Programar automático
+./scripts/backup-manager.sh restore <file> # Restaurar
+
+# Aplicar backup nativo Azure
+terraform apply  # Configura Backup Vault
+```
+
+### Costos de Backup
+- **Backup Vault**: ~$5/mes
+- **Volume Snapshots**: ~$0.05/GB/mes  
+- **Retención optimizada**: 7 días (mínimo costo)
+- **Total estimado**: $5-10/mes
+
+📚 **Documentación**: [Backup Strategy](./docs/backup-strategy.md)
 
 ## 🤖 Agentes IA
 
