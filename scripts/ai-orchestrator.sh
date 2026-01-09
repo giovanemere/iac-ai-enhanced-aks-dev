@@ -191,6 +191,26 @@ case $ACTION in
         python3 "$PROJECT_ROOT/ai-agents/backup-analyzer/analyzer.py" "$ENVIRONMENT"
         ;;
     
+    "schedule-stop")
+        log_ai "Deteniendo servicios con AI Schedule Manager..."
+        "$PROJECT_ROOT/scripts/ai-schedule-manager.sh" stop
+        ;;
+    
+    "schedule-start")
+        log_ai "Iniciando servicios con AI Schedule Manager..."
+        "$PROJECT_ROOT/scripts/ai-schedule-manager.sh" start
+        ;;
+    
+    "schedule-setup")
+        log_ai "Configurando scheduler automático..."
+        "$PROJECT_ROOT/scripts/ai-schedule-manager.sh" schedule
+        ;;
+    
+    "schedule-status")
+        log_ai "Verificando estado de servicios programados..."
+        "$PROJECT_ROOT/scripts/ai-schedule-manager.sh" status
+        ;;
+    
     "status")
         log_ai "Verificando estado del sistema..."
         
@@ -207,6 +227,10 @@ case $ACTION in
         if [ -f "$PROJECT_ROOT/scripts/validate-azure-native-backup.sh" ]; then
             "$PROJECT_ROOT/scripts/validate-azure-native-backup.sh"
         fi
+        
+        # Estado de scheduler
+        echo "⏰ Estado de Scheduler:"
+        "$PROJECT_ROOT/scripts/ai-schedule-manager.sh" status
         ;;
     
     "help"|*)
@@ -227,6 +251,10 @@ case $ACTION in
         echo "  backup-setup    - Solo configurar sistema de backup"
         echo "  cost-analysis   - Análisis de costos con IA"
         echo "  backup-analysis - Análisis de backup con IA"
+        echo "  schedule-stop   - Detener servicios (hasta 2:45 PM)"
+        echo "  schedule-start  - Iniciar servicios manualmente"
+        echo "  schedule-setup  - Configurar scheduler automático"
+        echo "  schedule-status - Estado de servicios programados"
         echo "  status          - Estado completo del sistema"
         echo "  help            - Mostrar esta ayuda"
         echo ""
@@ -236,6 +264,8 @@ case $ACTION in
         echo "Ejemplos:"
         echo "  $0 dev deploy              # Desplegar con backup automático"
         echo "  $0 dev redeploy            # Redespliegue completo con backup"
+        echo "  $0 dev schedule-stop       # Detener servicios hasta 2:45 PM"
+        echo "  $0 dev schedule-setup      # Configurar horarios automáticos"
         echo "  BACKUP_ENABLED=false $0 dev deploy  # Desplegar sin backup"
         ;;
 esac

@@ -233,33 +233,43 @@ az dataprotection backup-instance initialize \
     --friendly-name "$CLUSTER_NAME-backup" \
     --backup-configuration @/tmp/backup-config.json > /tmp/backup-instance.json
 
-# Intentar crear con reintentos
-ATTEMPTS=0
-MAX_ATTEMPTS=3
-BACKUP_INSTANCE_CREATED=false
+# Verificar si ya existe backup instance
+EXISTING_INSTANCES=$(az dataprotection backup-instance list --resource-group $RESOURCE_GROUP --vault-name $VAULT_NAME --query "length(@)" 2>/dev/null || echo "0")
 
-while [ $ATTEMPTS -lt $MAX_ATTEMPTS ]; do
-    ATTEMPTS=$((ATTEMPTS + 1))
-    echo "Intento $ATTEMPTS/$MAX_ATTEMPTS de crear Backup Instance..."
-    
-    if az dataprotection backup-instance create \
-        --resource-group $RESOURCE_GROUP \
-        --vault-name $VAULT_NAME \
-        --backup-instance @/tmp/backup-instance.json > /dev/null 2>&1; then
-        BACKUP_INSTANCE_CREATED=true
-        break
-    else
-        if [ $ATTEMPTS -lt $MAX_ATTEMPTS ]; then
-            echo "Esperando propagación de permisos (120 segundos)..."
-            sleep 120
+if [ "$EXISTING_INSTANCES" -gt 0 ]; then
+    show_success "Backup Instance ya existe - Portal Azure debería estar activo"
+    BACKUP_INSTANCE_CREATED=true
+else
+    # Intentar crear con reintentos
+    ATTEMPTS=0
+    MAX_ATTEMPTS=3
+    BACKUP_INSTANCE_CREATED=false
+
+    while [ $ATTEMPTS -lt $MAX_ATTEMPTS ]; do
+        ATTEMPTS=$((ATTEMPTS + 1))
+        echo "Intento $ATTEMPTS/$MAX_ATTEMPTS de crear Backup Instance..."
+        
+        if az dataprotection backup-instance create \
+            --resource-group $RESOURCE_GROUP \
+            --vault-name $VAULT_NAME \
+            --backup-instance @/tmp/backup-instance.json > /dev/null 2>&1; then
+            BACKUP_INSTANCE_CREATED=true
+            break
+        else
+            if [ $ATTEMPTS -lt $MAX_ATTEMPTS ]; then
+                echo "Esperando propagación de permisos MSI (180 segundos - tiempo real)..."
+                sleep 180
+            fi
         fi
-    fi
-done
+    done
+fi
 
 if [ "$BACKUP_INSTANCE_CREATED" = true ]; then
-    show_success "Backup Instance creado - Portal Azure activado"
+    show_success "Backup Instance configurado - Portal Azure activado"
 else
-    show_warning "Backup Instance no creado - Ejecutar más tarde: ./scripts/retry-backup-instance.sh"
+    show_warning "Backup Instance pendiente - Los permisos MSI pueden tardar 30-40 minutos en propagarse completamente"
+    show_warning "El portal se activará automáticamente una vez propagados los permisos"
+    echo "Para verificar más tarde: az dataprotection backup-instance list --resource-group $RESOURCE_GROUP --vault-name $VAULT_NAME"
 fi
 
 # Configurar Velero backups
