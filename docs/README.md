@@ -10,12 +10,14 @@ Arquitectura general del sistema AI-Enhanced
 - Flujos de trabajo automatizados
 - Roadmap de implementación
 
-### 🔄 [Backup Strategy](./backup-strategy.md)
-Estrategia completa de backup con IA
-- Azure Native Backup configuration
-- Volume Snapshots automation
-- AI-driven backup optimization
-- Cost analysis and recommendations
+### 🛡️ [Backup Complete Guide](./backup-complete-guide.md)
+**GUÍA ÚNICA** - Todo lo necesario para backup completo en AKS
+- ⚡ Método automatizado (script completo)
+- 📋 Método manual (10 pasos detallados)
+- 🌐 Activación del portal Azure
+- 🔧 Troubleshooting integrado
+- ✅ Verificación y comandos útiles
+- 💰 Análisis de costos
 
 ## 🎯 Guías Específicas
 

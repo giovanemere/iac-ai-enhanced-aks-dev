@@ -27,7 +27,72 @@ azure-aks-iac/
 └── 🏗️  ARCHITECTURE.md        # Arquitectura detallada
 ```
 
-## 🚀 Uso
+## 🤖 AI Orchestrator con Backup Automático
+
+El AI Orchestrator ahora incluye backup automático durante destrucción y recreación de clusters.
+
+### Comandos Disponibles
+
+#### Despliegue con Backup Automático
+```bash
+# Desplegar infraestructura + configurar backup
+./scripts/ai-orchestrator.sh dev deploy
+```
+
+#### Destrucción con Backup Automático
+```bash
+# Backup automático + destruir infraestructura
+./scripts/ai-orchestrator.sh dev destroy
+```
+
+#### Redespliegue Completo con Backup
+```bash
+# Backup + destruir + redesplegar + mostrar info de restauración
+./scripts/ai-orchestrator.sh dev redeploy
+```
+
+#### Configuración Solo de Backup
+```bash
+# Solo configurar sistema de backup
+./scripts/ai-orchestrator.sh dev backup-setup
+```
+
+#### Estado Completo del Sistema
+```bash
+# Verificar estado de infraestructura y backup
+./scripts/ai-orchestrator.sh dev status
+```
+
+### Flujo Automático de Backup
+
+```mermaid
+sequenceDiagram
+    participant U as Usuario
+    participant AI as AI Orchestrator
+    participant K8S as Kubernetes
+    participant V as Velero
+    participant AS as Azure Storage
+    participant TF as Terraform
+    
+    U->>AI: ./ai-orchestrator.sh dev redeploy
+    AI->>K8S: Verificar cluster existente
+    AI->>V: Crear backup pre-destrucción
+    V->>AS: Almacenar backup
+    AI->>TF: Destruir infraestructura
+    AI->>TF: Crear nueva infraestructura
+    AI->>AI: Configurar backup automático
+    AI->>U: Mostrar comando de restauración
+```
+
+### Variables de Entorno
+
+```bash
+# Deshabilitar backup automático
+BACKUP_ENABLED=false ./scripts/ai-orchestrator.sh dev deploy
+
+# Habilitar backup (por defecto)
+BACKUP_ENABLED=true ./scripts/ai-orchestrator.sh dev redeploy
+```
 
 ```bash
 # Verificar sistema

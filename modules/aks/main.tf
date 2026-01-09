@@ -66,7 +66,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   # Red básica para reducir costos
   network_profile {
     network_plugin    = "kubenet"
-    load_balancer_sku = "basic"
+    load_balancer_sku = "standard"  # Azure requiere standard
   }
 
   tags = local.tags
